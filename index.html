@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream Havoc - Bring Your Stream to Life</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Fjalla+One&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fjalla One', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            animation: float 12s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; width: 50px; height: 50px; }
+        .particle:nth-child(2) { top: 25%; left: 85%; animation-delay: 4s; width: 40px; height: 40px; }
+        .particle:nth-child(3) { top: 75%; left: 15%; animation-delay: 8s; width: 55px; height: 55px; }
+        .particle:nth-child(4) { top: 45%; left: 90%; animation-delay: 2s; width: 35px; height: 35px; }
+        .particle:nth-child(5) { top: 85%; left: 75%; animation-delay: 6s; width: 45px; height: 45px; }
+        .particle:nth-child(6) { top: 10%; left: 65%; animation-delay: 3s; width: 50px; height: 50px; }
+        .particle:nth-child(7) { top: 55%; left: 20%; animation-delay: 7s; width: 60px; height: 60px; }
+        .particle:nth-child(8) { top: 35%; left: 45%; animation-delay: 9s; width: 40px; height: 40px; }
+        .particle:nth-child(9) { top: 5%; left: 40%; animation-delay: 1s; width: 45px; height: 45px; }
+        .particle:nth-child(10) { top: 65%; left: 60%; animation-delay: 5s; width: 50px; height: 50px; }
+        .particle:nth-child(11) { top: 40%; left: 5%; animation-delay: 10s; width: 35px; height: 35px; }
+        .particle:nth-child(12) { top: 90%; left: 50%; animation-delay: 11s; width: 55px; height: 55px; }
+        .particle:nth-child(13) { top: 20%; left: 30%; animation-delay: 12s; width: 40px; height: 40px; }
+        .particle:nth-child(14) { top: 50%; left: 70%; animation-delay: 13s; width: 45px; height: 45px; }
+        .particle:nth-child(15) { top: 80%; left: 35%; animation-delay: 14s; width: 50px; height: 50px; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            33% { transform: translateY(-15px) rotate(120deg) scale(1.1); }
+            66% { transform: translateY(-5px) rotate(240deg) scale(0.9); }
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .logo-svg {
+            height: 120px;
+            width: auto;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 30px rgba(247, 202, 35, 0.5));
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .tagline {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            color: #e0e0e0;
+            animation: fadeIn 1.5s ease-out;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .description {
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+            color: #b0b0b0;
+            animation: fadeIn 2s ease-out;
+        }
+
+        .email-signup {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 0;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 500px;
+            border: 2px solid rgba(247, 202, 35, 0.4);
+            animation: sharpGlow 2s ease-in-out infinite alternate;
+        }
+      
+
+        @keyframes sharpGlow {
+            0% { 
+                box-shadow: 0 0 15px rgba(247, 202, 35, 0.3); /* blurred glow */
+            }
+            100% { 
+                box-shadow: 0 0 30px rgba(247, 202, 35, 0.6); /* stronger blurred glow */
+            }
+        }
+
+        .email-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .email-input {
+            padding: 1rem;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 1.1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .email-input:focus {
+            outline: none;
+            background: white;
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(247, 202, 35, 0.5);
+        }
+
+        .submit-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(45deg, rgb(247,202,35), rgb(255,220,70));
+            color: #333;
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(247, 202, 35, 0.4);
+            background: linear-gradient(45deg, rgb(255,220,70), rgb(247,202,35));
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 500px);
+            gap: 2rem;
+            margin-top: 6rem;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(247, 202, 35, 0.2);
+            transition: all 0.3s ease;
+            height: 280px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(247, 202, 35, 0.5);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            margin-top: 0.5rem;
+            margin-bottom: 2rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .feature h3 {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 500;
+            color: rgb(247,202,35);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .success-message {
+            display: none;
+            background: linear-gradient(45deg, rgb(247,202,35), rgb(255,220,70));
+            color: #333;
+            padding: 1rem;
+            border-radius: 0;
+            margin-top: 1rem;
+            font-weight: bold;
+            animation: bounceIn 0.5s ease-out;
+            font-family: 'Fjalla One', sans-serif;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .logo-svg {
+                height: 80px;
+            }
+            
+            .tagline {
+                font-size: 1.8rem;
+                letter-spacing: 2px;
+            }
+            
+            .description {
+                font-size: 1rem;
+            }
+            
+            .email-form {
+                gap: 1.5rem;
+            }
+            
+            .submit-btn {
+                font-size: 1rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .screenshots {
+            padding: 4rem 2rem;
+            background: rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .screenshots-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .screenshots-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: rgb(247,202,35);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .screenshots-description {
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.3rem;
+            color: #b0b0b0;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .screenshot-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(247, 202, 35, 0.2);
+            border-radius: 0;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .screenshot-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(247, 202, 35, 0.5);
+        }
+
+        .screenshot-image {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+            border-radius: 0;
+            margin-bottom: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .screenshot-info h3 {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 500;
+            color: rgb(247,202,35);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .screenshot-info p {
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .screenshots-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .screenshots-title {
+                font-size: 2rem;
+            }
+            
+            .screenshots-description {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <svg class="particle" viewBox="0 0 100 100">
+            <path d="M50,20 C50,35 55,40 70,40 C55,40 50,45 50,60 C50,45 45,40 30,40 C45,40 50,35 50,20 Z" fill="rgba(247,202,35,0.3)" stroke="rgba(247,202,35,0.5)" stroke-width="2"/>
+        </svg>
+        <svg class="particle" viewBox="0 0 100 100">
+            <path d="M50,20 C50,35 55,40 70,40 C55,40 50,45 50,60 C50,45 45,40 30,40 C45,40 50,35 50,20 Z" fill="rgba(247,202,35,0.2)" stroke="rgba(247,202,35,0.4)" stroke-width="1"/>
+        </svg>
+        <svg class="particle" viewBox="0 0 100 100">
+            <path d="M50,30 L60,50 L50,70 L40,50 Z" fill="rgba(247,202,35,0.25)" stroke="rgba(247,202,35,0.5)" stroke-width="2"/>
+        </svg>
+        <svg class="particle" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="15" fill="rgba(247,202,35,0.2)" stroke="rgba(247,202,35,0.4)" stroke-width="1"/>
+        </svg>
+        <svg class="particle" viewBox="0 0 100 100">
+            <path d="M50,20 C50,35 55,40 70,40 C55,40 50,45 50,60 C50,45 45,40 30,40 C45,40 50,35 50,20 Z" fill="rgba(247,202,35,0.15)" stroke="rgba(247,202,35,0.3)" stroke-width="1"/>
+        </svg>
+        <svg class="particle" viewBox="0 0 100 100">
+            <path d="M30,40 L50,30 L70,40 L60,60 L40,60 Z" fill="rgba(247,202,35,0.2)" stroke="rgba(247,202,35,0.4)" stroke-width="1"/>
+        </svg>
+        <svg class="particle" viewBox="0 0 100 100">
+            <path d="M50,20 C50,35 55,40 70,40 C55,40 50,45 50,60 C50,45 45,40 30,40 C45,40 50,35 50,20 Z" fill="rgba(247,202,35,0.3)" stroke="rgba(247,202,35,0.6)" stroke-width="2"/>
+        </svg>
+        <svg class="particle" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="20" fill="rgba(247,202,35,0.1)" stroke="rgba(247,202,35,0.3)" stroke-width="1"/>
+        </svg>
+        <svg class="particle" viewBox="0 0 100 100">
+            <path d="M50,25 L55,45 L75,45 L60,57 L65,75 L50,65 L35,75 L40,57 L25,45 L45,45 Z" fill="rgba(247,202,35,0.15)" stroke="rgba(247,202,35,0.3)" stroke-width="1"/>
+        </svg>
+        <svg class="particle" viewBox="0 0 100 100">
+            <path d="M50,20 C50,35 55,40 70,40 C55,40 50,45 50,60 C50,45 45,40 30,40 C45,40 50,35 50,20 Z" fill="rgba(247,202,35,0.25)" stroke="rgba(247,202,35,0.4)" stroke-width="1"/>
+        </svg>
+        <svg class="particle" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="12" fill="rgba(247,202,35,0.3)" stroke="rgba(247,202,35,0.5)" stroke-width="2"/>
+        </svg>
+        <svg class="particle" viewBox="0 0 100 100">
+            <path d="M50,30 L60,50 L50,70 L40,50 Z" fill="rgba(247,202,35,0.2)" stroke="rgba(247,202,35,0.4)" stroke-width="1"/>
+        </svg>
+        <svg class="particle" viewBox="0 0 100 100">
+            <path d="M50,20 C50,35 55,40 70,40 C55,40 50,45 50,60 C50,45 45,40 30,40 C45,40 50,35 50,20 Z" fill="rgba(247,202,35,0.1)" stroke="rgba(247,202,35,0.25)" stroke-width="1"/>
+        </svg>
+        <svg class="particle" viewBox="0 0 100 100">
+            <path d="M30,30 L70,30 L70,70 L30,70 Z" fill="rgba(247,202,35,0.15)" stroke="rgba(247,202,35,0.35)" stroke-width="1"/>
+        </svg>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <img src="Logo Vector YB.svg" alt="Stream Havoc Logo" class="logo-svg">
+            <p class="tagline">Bring Your Stream to Life</p>
+            <p class="description">
+                Revolutionary software that lets your viewers trigger real-world effects during your stream. 
+                Flash lights, drop objects, fire projectiles, and create unforgettable interactive experiences 
+                that bridge the digital and physical worlds.
+            </p>
+            
+            <div class="email-signup-glow">
+            <div class="email-signup">
+                <h2 style="margin-bottom: 1rem; color: rgb(247,202,35); font-family: 'Oswald', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">Stay Up To Date</h2>
+                <p style="margin-bottom: 1.5rem; color: #ccc; font-family: 'Fjalla One', sans-serif;">Be the first to revolutionize your streaming experience</p>
+                
+                <form class="email-form" id="emailForm">
+                    <input 
+                        type="email" 
+                        class="email-input" 
+                        placeholder="Enter your email address"
+                        required
+                        id="emailInput"
+                    >
+                    <button type="submit" class="submit-btn">Join the Chaos</button>
+                </form>
+                
+                <div class="success-message" id="successMessage">
+                    🎉 Welcome to the havoc!<br>
+                    We'll notify you when early access begins.
+                </div>
+            </div>
+              </div>
+
+            <div class="features">
+                <div class="feature">
+                    <img src="offline_bolt_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg" alt="Bolt Icon" class="feature-icon">
+                    <h3>Physical Effects</h3>
+                    <p style="font-family: 'Fjalla One', sans-serif;">Control lights, motors, and devices with viewer interactions</p>
+                </div>
+                
+                <div class="feature">
+                    <img src="target_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg" alt="Target Icon" class="feature-icon">
+                    <h3>Custom Triggers</h3>
+                    <p style="font-family: 'Fjalla One', sans-serif;">Set up unique actions for follows, donations, and chat commands</p>
+                </div>
+                
+                <div class="feature">
+                    <img src="build_circle_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg" alt="Build Icon" class="feature-icon">
+                    <h3>Easy Setup</h3>
+                    <p style="font-family: 'Fjalla One', sans-serif;">Plug-and-play hardware integration with intuitive software</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="screenshots">
+        <div class="screenshots-content">
+            <h2 class="screenshots-title">See Stream Havoc in Action</h2>
+            <p class="screenshots-description">Get a preview of the powerful software that's revolutionizing interactive streaming</p>
+            
+            <div class="screenshots-grid">
+                <div class="screenshot-item">
+                    <img src="software_mockup1.png" alt="Stream Havoc Software Interface" class="screenshot-image">
+                    <div class="screenshot-info">
+                        <h3>Intuitive Control Panel</h3>
+                        <p style="font-family: 'Fjalla One', sans-serif;">Easy-to-use interface for managing all your interactive stream elements in real-time</p>
+                    </div>
+                </div>
+                
+                <div class="screenshot-item">
+                    <img src="software_mockup2.png" alt="Stream Havoc Hardware Setup" class="screenshot-image">
+                    <div class="screenshot-info">
+                        <h3>Hardware Integration</h3>
+                        <p style="font-family: 'Fjalla One', sans-serif;">Seamless connection between your streaming software and physical devices</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const emailInput = document.getElementById('emailInput');
+            const successMessage = document.getElementById('successMessage');
+            const submitBtn = e.target.querySelector('.submit-btn');
+            
+            // Simple email validation
+            const email = emailInput.value.trim();
+            if (!email || !email.includes('@')) {
+                emailInput.style.borderColor = '#ff4444';
+                return;
+            }
+            
+            // Simulate form submission
+            submitBtn.textContent = 'Joining...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                emailInput.style.display = 'none';
+                submitBtn.style.display = 'none';
+                successMessage.style.display = 'block';
+                
+                // Here you would typically send the email to your backend
+                console.log('Email submitted:', email);
+            }, 1000);
+        });
+
+        // Add some interactive particle effects
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.98) {
+                createSparkle(e.clientX, e.clientY);
+            }
+        });
+
+        function createSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.style.position = 'fixed';
+            sparkle.style.left = x + 'px';
+            sparkle.style.top = y + 'px';
+            sparkle.style.width = '4px';
+            sparkle.style.height = '4px';
+            sparkle.style.background = 'rgb(247,202,35)';
+            sparkle.style.borderRadius = '50%';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.zIndex = '9999';
+            sparkle.style.animation = 'sparkle 1s ease-out forwards';
+            
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 1000);
+        }
+
+        // Add sparkle animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes sparkle {
+                0% {
+                    transform: scale(0) rotate(0deg);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(1) rotate(180deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
