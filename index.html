@@ -188,10 +188,13 @@
             justify-content: center;
             margin-left: auto;
             margin-right: auto;
+            position: relative;
+            z-index: 2;
         }
 
         .feature {
             background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
             border-radius: 0;
             padding: 2rem;
             text-align: center;
@@ -335,6 +338,7 @@
 
         .screenshot-item {
             background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(253, 204, 4, 0.2);
             border-radius: 0;
             padding: 2rem;
