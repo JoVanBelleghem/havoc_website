@@ -456,6 +456,38 @@
             transform: scale(1.02);
             box-shadow: 0 0 20px rgba(253, 204, 4, 0.3);
         }
+
+        /* Contact section */
+        .contact-section {
+            padding: 4rem 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            color: rgb(253, 204, 4);
+            text-decoration: none;
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .contact-btn:hover {
+            color: rgb(255, 220, 70);
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -582,6 +614,15 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Contact section -->
+    <section class="contact-section">
+        <div class="contact-content">
+            <a href="mailto:raimen.gg@gmail.com" class="contact-btn">
+                Contact Us
+            </a>
         </div>
     </section>
 
