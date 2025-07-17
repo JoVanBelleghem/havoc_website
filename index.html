@@ -519,13 +519,14 @@
                 <h2 style="margin-bottom: 1rem; color: rgb(247,202,35); font-family: 'Oswald', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">Stay Up To Date</h2>
                 <p style="margin-bottom: 1.5rem; color: #ccc; font-family: 'Fjalla One', sans-serif;">Be the first to revolutionize your streaming experience</p>
                 
-                <form class="email-form" id="emailForm">
+                <form class="email-form" id="emailForm" action="https://formspree.io/f/manbnqpw" method="POST">
                     <input 
                         type="email" 
                         class="email-input" 
                         placeholder="Enter your email address"
                         required
                         id="emailInput"
+                        name="email"
                     >
                     <button type="submit" class="submit-btn">Join the Chaos</button>
                 </form>
@@ -608,18 +609,35 @@
                 return;
             }
             
-            // Simulate form submission
+            // Show loading state
             submitBtn.textContent = 'Joining...';
             submitBtn.disabled = true;
             
-            setTimeout(() => {
-                emailInput.style.display = 'none';
-                submitBtn.style.display = 'none';
-                successMessage.style.display = 'block';
-                
-                // Here you would typically send the email to your backend
-                console.log('Email submitted:', email);
-            }, 1000);
+            // Submit to Formspree
+            fetch('https://formspree.io/f/manbnqpw', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    emailInput.style.display = 'none';
+                    submitBtn.style.display = 'none';
+                    successMessage.style.display = 'block';
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                submitBtn.textContent = 'Try Again';
+                submitBtn.disabled = false;
+                alert('There was an error submitting your email. Please try again.');
+            });
         });
 
         // Add some interactive particle effects
